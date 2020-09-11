@@ -4,43 +4,58 @@ LD := ld
 OBJCOPY := objcopy
 OBJDUMP := objdump
 
-# INCDIRS 包含整个工程的头文件
-INCDIRS := main	\
-		common \
-		bubble
+# export CC LD OBJDUMP OBJCOPY
 
-# SRCDIRS 包含整个工程的c文件
-SRCDIRS := main	
+# include alg/bubble/makefile
+# include alg/insertion/makefile
+# include main/makefile
 
-# 通过patsubst函数给头文件添加“-I”
-INCLUDE	:= $(patsubst %, -I %, $(INCDIRS))
+# # INCDIRS 包含整个工程的头文件
+# INCDIRS := main	\
+# 		common \
+# 		alg/bubble\
+# 		alg/insertion
 
-# 通过foreach函数和wildcard函数将各个目录下的.S/.c文件添加到SFILES和CFILES
-SFILES	:= $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.S))
-CFILES	:= $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.c))
+# # SRCDIRS 包含整个工程的c文件
+# SRCDIRS := main	\
+# 			common \
+			
 
-# 通过notdir函数去掉SFILES和CFILES中的路径只保留文件名
-SFILENDIR	:= $(notdir $(SFILES))
-SFILENDIR	:= $(notdir $(CFILES))
 
-SOBJS	:= $(patsubst %, obj/%, $(SFILENDIR:.S=.o))
-COBJS	:= $(patsubst %, obj/%, $(SFILENDIR:.c=.o))
-OBJS	:= $(SOBJS) $(COBJS)
+# # 通过patsubst函数给头文件添加“-I”
+# INCLUDE	:= $(patsubst %, -I %, $(INCDIRS))
 
-VPATH := $(SRCDIRS)
+# # 通过foreach函数和wildcard函数将各个目录下的.S/.c文件添加到SFILES和CFILES
+# SFILES	:= $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.S))
+# CFILES	:= $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.c))
 
-.PHONY: clean
+# # 通过notdir函数去掉SFILES和CFILES中的路径只保留文件名
+# SFILENDIR	:= $(notdir $(SFILES))
+# SFILENDIR	:= $(notdir $(CFILES))
 
-CFLAGS =  -Wall -nostdlib -c  -o
+# # SOBJS	:= $(patsubst %, obj/%, $(SFILENDIR:.S=.o))
+# # COBJS	:= $(patsubst %, obj/%, $(SFILENDIR:.c=.o))
+# # OBJS	:= $(SOBJS) $(COBJS)
 
-objs := main.o
+# VPATH := $(SRCDIRS)
 
-main.out: $(objs)
+# .PHONY: clean
+
+# # CFLAGS =  -Wall -nostdlib -c  -o
+
+# main.out: $(OBJS)
+# 	$(LD) -o $@ $<
+
+# %.o: %.c %.h
+# 	$(CC) $(INCLUDE) $@ $<
+
+
+main.out: main/main.o alg/bubble/bubble_sort.o alg/insertion/insertion.o common/common.o
 	$(LD) -o $@ $<
 
 %.o: %.c %.h
-	$(CC) $(CCFLAGS) $(INCLUDE) $@ $<
+	$(CC) -c $@ $<
 
-
+.PHONY: clean
 clean:
-	rm -rf *.o 
+	-rm -rf *.o *.out 
