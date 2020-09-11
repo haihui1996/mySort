@@ -1,0 +1,13 @@
+/////////////////////////////////////////////////////////////////////////////
+//@FileName:  type.h
+//@Path:      H:\Sort\common
+//@Description: 
+//@Copyright (c) 2020 Haihui Deng
+//@Author     haihui_deng@163.com 2020/09/08
+/////////////////////////////////////////////////////////////////////////////
+#ifndef __TYPE_H__
+#define __TYPE_H__
+
+typedef unsigned int uint;
+
+#endif // !__TYPE_H__
